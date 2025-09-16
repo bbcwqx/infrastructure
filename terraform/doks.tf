@@ -7,7 +7,7 @@ resource "digitalocean_tag" "cluster" {
 }
 
 resource "digitalocean_kubernetes_cluster" "cluster" {
-  name          = "cluster-x"
+  name          = "cluster"
   region        = local.do_region
   auto_upgrade  = true
   surge_upgrade = true
@@ -21,8 +21,8 @@ resource "digitalocean_kubernetes_cluster" "cluster" {
 
   node_pool {
     name       = "default"
-    size       = "s-2vcpu-4gb"
-    node_count = 1
+    size       = local.do_k8s_node_size
+    node_count = local.do_k8s_node_count
     tags       = [digitalocean_tag.cluster.name]
   }
 
