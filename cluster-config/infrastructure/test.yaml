@@ -45,6 +45,8 @@ kind: HTTPRoute
 metadata:
   name: test
   namespace: test
+  annotations:
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 spec:
   hostnames:
     - test.bbcwqx.com
