@@ -12,9 +12,21 @@ metadata:
 spec:
   gatewayClassName: cilium
   listeners:
-    - protocol: HTTP
+    - name: http
+      protocol: HTTP
       port: 80
-      name: web
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: cloudflare-origin-cert
+            namespace: cilium-gateway
       allowedRoutes:
         namespaces:
           from: All
