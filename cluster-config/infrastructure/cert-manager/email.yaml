@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: email
+    namespace: flux-system
+type: Opaque
+stringData:
+    email: ENC[AES256_GCM,data:VtMrMqHjIWuvpVKmNNQhuA==,iv:lVK9pndqza47cezExi8RevOmPV0O/TBv03Yu1435t8o=,tag:lKUtXEL65DD6TDxjzyWKJA==,type:str]
+sops:
+    age:
+        - recipient: age1r07u5mldcyxy5qjyj9ezaz9fq6lspspn2j7cg7yu3vms7tnukacqepaqyd
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtalRaVkN5NEV2MnlYb2Fz
+            WGZDV1VJaEo1Y1k2YlVuT0pWdHovYTFGS2tBClh2UGZGS1pORFFRUjNoT3FpbEVM
+            M2NldVE2aEk5Uk9saGlnUFM1US8yNVEKLS0tIENlNVY2KzNPamdEY1g4UmFHYUZo
+            dEIrang1dVBXRUtMd1BLbVA4S1hDdDgKxyugA1ArCWacgtPcszbfLETAj2+XtzvD
+            oNL+xZwQPWvFLF34Z+E/7Cr5UU1rcq/czuySMYOWd8WBUqqfaupvKA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-09-16T23:54:10Z"
+    mac: ENC[AES256_GCM,data:Rbs2tFdVqlYq3lTY8p4lzTsDjxIQ+pPKZyUSiKbGSmpM7/PbYf3DwjMOSf/F52DoBVeaV7QGFBwASaJtxPspG7TB/jSJQXvWIeoUebK7ERVvjQIcbk6cl2821K0dni0oHiJEmabq2h16QRa50z1nQTPTciWDHWo+bNvd1y6fD/g=,iv:qxaQ2mlYNC+Tw3meQ9xnkfolN1FlFu09sTKVET9TFkU=,tag:rPbSqFWCww2pVywJOF3XfA==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2

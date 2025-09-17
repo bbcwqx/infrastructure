@@ -4,6 +4,21 @@ kind: Namespace
 metadata:
   name: cilium-gateway
 ---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bbcwqx.com-tls
+  namespace: cilium-gateway
+spec:
+  secretName: bbcwqx.com-tls
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod-wildcard
+  commonName: "*.bbcwqx.com"
+  dnsNames:
+    - "*.bbcwqx.com"
+    - "*.pds.bbcwqx.com"
+---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -22,11 +37,9 @@ spec:
       protocol: HTTPS
       port: 443
       tls:
-        mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: cloudflare-origin-cert
-            namespace: cilium-gateway
+            name: bbcwqx.com-tls
       allowedRoutes:
         namespaces:
           from: All
