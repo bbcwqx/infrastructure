@@ -123,7 +123,7 @@ spec:
             processors: [memory_limiter, batch]
             exporters: [otlphttp]
           logs:
-            receivers: [otlp, k8sobjectsreceiver]
+            receivers: [otlp]
             processors: [memory_limiter, batch]
             exporters: [otlphttp]
     extraEnvs:
