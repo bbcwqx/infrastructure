@@ -115,16 +115,16 @@ spec:
       service:
         pipelines:
           traces:
-            receivers: [otlp]
-            processors: [memory_limiter, batch]
+            # receivers: [otlp]
+            # processors: [memory_limiter, batch]
             exporters: [otlphttp]
           metrics:
-            receivers: [otlp]
-            processors: [memory_limiter, batch]
+            # receivers: [otlp]
+            # processors: [memory_limiter, batch]
             exporters: [otlphttp]
           logs:
-            receivers: [otlp]
-            processors: [memory_limiter, batch]
+            # receivers: [otlp]
+            # processors: [memory_limiter, batch]
             exporters: [otlphttp]
     extraEnvs:
       - name: OTEL_AUTH_HEADER
