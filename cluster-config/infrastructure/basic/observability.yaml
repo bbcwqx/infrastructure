@@ -88,6 +88,11 @@ spec:
     mode: deployment
     image:
       repository: otel/opentelemetry-collector-k8s
+    presets:
+      clusterMetrics:
+        enabled: true
+      kubernetesEvents:
+        enabled: true
     config:
       receivers:
         otlp:
