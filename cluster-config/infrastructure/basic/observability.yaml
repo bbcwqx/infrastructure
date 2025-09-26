@@ -50,13 +50,6 @@ spec:
         enabled: true
 
     config:
-      processors:
-        resource/clusterName:
-          attributes:
-            - action: insert
-              key: k8s.cluster.name
-              value: "cluster"
-
       exporters:
         otlp:
           endpoint: "otel-collector-opentelemetry-collector:4317"
@@ -66,14 +59,13 @@ spec:
       service:
         pipelines:
           traces:
-            processors: [resource/clusterName, memory_limiter, batch]
+            processors: [memory_limiter, batch]
             exporters: [otlp]
           metrics:
-            processors: [resource/clusterName, memory_limiter, batch]
+            processors: [memory_limiter, batch]
             exporters: [otlp]
           logs:
-            processors:
-              [resource/clusterName, k8sattributes, memory_limiter, batch]
+            processors: [k8sattributes, memory_limiter, batch]
             exporters: [otlp]
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
