@@ -66,8 +66,10 @@ spec:
       service:
         pipelines:
           traces:
+            processors: [resource/clusterName, memory_limiter, batch]
             exporters: [otlp]
           metrics:
+            processors: [resource/clusterName, memory_limiter, batch]
             exporters: [otlp]
           logs:
             processors:
