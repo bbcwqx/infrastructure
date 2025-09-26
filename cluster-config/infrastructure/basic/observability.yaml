@@ -37,8 +37,10 @@ spec:
       retries: 3
   values:
     mode: daemonset
+
     image:
       repository: otel/opentelemetry-collector-k8s
+
     presets:
       kubernetesAttributes:
         enabled: true
@@ -46,12 +48,21 @@ spec:
         enabled: true
       logsCollection:
         enabled: true
+
     config:
+      processors:
+        resource/clusterName:
+          attributes:
+            - action: insert
+              key: k8s.cluster.name
+              value: "cluster"
+
       exporters:
         otlp:
           endpoint: "otel-collector-opentelemetry-collector:4317"
           tls:
             insecure: true
+
       service:
         pipelines:
           traces:
@@ -86,26 +97,44 @@ spec:
       retries: 3
   values:
     mode: deployment
+
     image:
       repository: otel/opentelemetry-collector-k8s
+
     presets:
       clusterMetrics:
         enabled: true
       kubernetesEvents:
         enabled: true
+
     config:
       receivers:
+        jaeger: null
+        prometheus: null
+        zipkin: null
         otlp:
           protocols:
             grpc:
               endpoint: "0.0.0.0:4317"
             http:
               endpoint: "0.0.0.0:4318"
+
+      processors:
+        resource/k8sEvents:
+          attributes:
+            - action: insert
+              key: k8s.cluster.name
+              value: "cluster"
+            - action: upsert
+              key: service.name
+              value: "integrations/kubernetes/eventhandler"
+
       exporters:
         otlphttp:
           endpoint: "https://otlp-gateway-prod-us-east-2.grafana.net/otlp"
           headers:
             authorization: ${env:OTEL_AUTH_HEADER}
+
       service:
         pipelines:
           traces:
@@ -114,6 +143,7 @@ spec:
             exporters: [otlphttp]
           logs:
             exporters: [otlphttp]
+
     extraEnvs:
       - name: OTEL_AUTH_HEADER
         valueFrom:
