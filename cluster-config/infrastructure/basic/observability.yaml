@@ -170,7 +170,7 @@ spec:
                     replacement: $1:$2
 
       processors:
-        resource/k8sEvents:
+        resource/clusterName:
           attributes:
             - action: insert
               key: k8s.cluster.name
@@ -185,11 +185,13 @@ spec:
       service:
         pipelines:
           traces:
+            processors: [resource/clusterName, memory_limiter, batch]
             exporters: [otlphttp]
           metrics:
+            processors: [resource/clusterName, memory_limiter, batch]
             exporters: [otlphttp]
           logs:
-            processors: [resource/k8sEvents, memory_limiter, batch]
+            processors: [resource/clusterName, memory_limiter, batch]
             exporters: [otlphttp]
 
     extraEnvs:
