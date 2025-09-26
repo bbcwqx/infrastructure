@@ -141,7 +141,7 @@ spec:
           metrics:
             exporters: [otlphttp]
           logs:
-            processors: [resource/k8sEvents, memory_limiter, batch]
+            processors: [otlp, resource/k8sEvents, memory_limiter, batch]
             exporters: [otlphttp]
 
     extraEnvs:
