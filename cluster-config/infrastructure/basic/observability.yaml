@@ -109,9 +109,6 @@ spec:
 
     config:
       receivers:
-        jaeger: null
-        prometheus: null
-        zipkin: null
         otlp:
           protocols:
             grpc:
