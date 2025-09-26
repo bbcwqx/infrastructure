@@ -70,6 +70,8 @@ spec:
           metrics:
             exporters: [otlp]
           logs:
+            processors:
+              [resource/clusterName, k8sattributes, memory_limiter, batch]
             exporters: [otlp]
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -139,6 +141,7 @@ spec:
           metrics:
             exporters: [otlphttp]
           logs:
+            processors: [resource/k8sEvents, memory_limiter, batch]
             exporters: [otlphttp]
 
     extraEnvs:
