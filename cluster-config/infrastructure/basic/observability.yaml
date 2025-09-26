@@ -120,6 +120,55 @@ spec:
             http:
               endpoint: "0.0.0.0:4318"
 
+        prometheus:
+          config:
+            scrape_configs:
+              # collector
+              - job_name: "opentelemetry-collector"
+                scrape_interval: 10s
+                static_configs:
+                  - targets:
+                      - ${env:MY_POD_IP}:8888
+              # pods
+              - job_name: "kubernetes-pods"
+                kubernetes_sd_configs:
+                  - role: pod
+                relabel_configs:
+                  - source_labels:
+                      [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+                    action: keep
+                    regex: true
+                  - source_labels:
+                      [
+                        __address__,
+                        __meta_kubernetes_pod_annotation_prometheus_io_port,
+                      ]
+                    action: replace
+                    regex: ([^:]+)(?::\d+)?;(\d+)
+                    replacement: ${1}:${2}
+                    target_label: __address__
+              # endpoints
+              - job_name: "kubernetes-endpoints"
+                scrape_interval: 30s
+                kubernetes_sd_configs:
+                  - role: endpoints
+                relabel_configs:
+                  - source_labels:
+                      [
+                        __meta_kubernetes_service_annotation_prometheus_io_scrape,
+                      ]
+                    action: keep
+                    regex: true
+                  - source_labels:
+                      [
+                        __address__,
+                        __meta_kubernetes_service_annotation_prometheus_io_port,
+                      ]
+                    action: replace
+                    target_label: __address__
+                    regex: (.+)(?::\d+);(\d+)
+                    replacement: $1:$2
+
       processors:
         resource/k8sEvents:
           attributes:
