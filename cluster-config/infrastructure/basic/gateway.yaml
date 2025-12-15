@@ -31,7 +31,7 @@ spec:
           from: All
     - name: https-nblr
       protocol: HTTPS
-      hostname: nblr.app
+      hostname: slice.nblr.app
       port: 443
       tls:
         certificateRefs:
