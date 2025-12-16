@@ -78,7 +78,7 @@ spec:
     spec:
       containers:
         - name: quickslice
-          image: ghcr.io/bigmoves/quickslice:latest
+          image: ghcr.io/bigmoves/quickslice:sha-2327c76 # 0.17.3
           ports:
             - containerPort: 8080
               name: http
