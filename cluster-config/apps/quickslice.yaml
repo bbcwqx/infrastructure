@@ -1,0 +1,121 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nblr-quickslice
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quickslice-config
+  namespace: nblr-quickslice
+data:
+  HOST: "0.0.0.0"
+  PORT: "8080"
+  DATABASE_URL: "sqlite:/data/quickslice.db"
+  EXTERNAL_BASE_URL: "https://slice.nblr.app"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quickslice-service
+  namespace: nblr-quickslice
+  labels:
+    app: quickslice
+spec:
+  selector:
+    app: quickslice
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+  type: ClusterIP
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: quickslice-route
+  namespace: nblr-quickslice
+  annotations:
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: cilium-gateway
+      namespace: cilium-gateway
+  hostnames:
+    - "slice.nblr.app"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: "/"
+      backendRefs:
+        - name: quickslice-service
+          port: 80
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: quickslice
+  namespace: nblr-quickslice
+  labels:
+    app: quickslice
+spec:
+  replicas: 1
+  serviceName: quickslice
+  updateStrategy:
+    type: OnDelete
+  selector:
+    matchLabels:
+      app: quickslice
+  template:
+    metadata:
+      labels:
+        app: quickslice
+    spec:
+      containers:
+        - name: quickslice
+          image: ghcr.io/bigmoves/quickslice:latest
+          ports:
+            - containerPort: 8080
+              name: http
+          envFrom:
+            - configMapRef:
+                name: quickslice-config
+            - secretRef:
+                name: quickslice-secrets
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: do-block-storage-retain
