@@ -31,12 +31,12 @@ spec:
           from: All
     - name: https-nblr
       protocol: HTTPS
-      hostname: slice.nblr.app
+      hostname: "*.nblr.app"
       port: 443
       tls:
+        mode: Terminate
         certificateRefs:
-          - kind: Secret
-            name: nblr.app-tls
+          - name: cloudflare-origin-tls-nblr.app
       allowedRoutes:
         namespaces:
           from: All
