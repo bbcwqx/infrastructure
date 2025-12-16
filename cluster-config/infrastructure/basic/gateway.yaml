@@ -9,6 +9,9 @@ kind: Gateway
 metadata:
   name: cilium-gateway
   namespace: cilium-gateway
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "*.nblr.app"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 spec:
   gatewayClassName: cilium
   listeners:
