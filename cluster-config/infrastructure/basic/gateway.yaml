@@ -18,17 +18,6 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: https-bbcwqx
-      protocol: HTTPS
-      hostname: bbcwqx.com
-      port: 443
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: bbcwqx.com-tls
-      allowedRoutes:
-        namespaces:
-          from: All
     - name: https-nblr
       protocol: HTTPS
       hostname: "*.nblr.app"
