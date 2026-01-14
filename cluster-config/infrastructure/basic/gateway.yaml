@@ -21,8 +21,6 @@ spec:
     - name: https
       protocol: HTTPS
       port: 443
-      tls:
-        mode: Terminate
       allowedRoutes:
         namespaces:
           from: All
