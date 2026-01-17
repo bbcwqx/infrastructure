@@ -69,7 +69,7 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1000
-          image: "ghcr.io/bluesky-social/pds:0.4.193"
+          image: "ghcr.io/bluesky-social/pds:0.4.204"
           imagePullPolicy: IfNotPresent
           env:
             - name: PDS_HOSTNAME
